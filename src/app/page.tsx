@@ -1,13 +1,9 @@
-import { Navbar } from '@/components/layout/navbar';
+import { AppShell } from '@/components/layout/app-shell';
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-
-      <main className="flex h-[80vh] items-center justify-center">
-        <h1 className="text-4xl font-bold">Welcome to DevTrace AI</h1>
-      </main>
-    </>
+    <AppShell>
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+    </AppShell>
   );
 }
