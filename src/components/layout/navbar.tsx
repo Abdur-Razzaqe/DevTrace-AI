@@ -1,13 +1,16 @@
-import { Logo } from '@/components/common/logo';
-import { ThemeToggle } from '@/components/common/theme-toggle';
+import { NavActions } from './nav-actions';
+import { NavLinks } from './nav-links';
+import { NavLogo } from './nav-logo';
 
 export function Navbar() {
   return (
-    <header className="bg-background border-b">
-      <div className="mx-auto flex h-16 items-center justify-between px-6">
-        <Logo />
+    <header className="bg-background/80 border-b backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <NavLogo />
 
-        <ThemeToggle />
+        <NavLinks />
+
+        <NavActions />
       </div>
     </header>
   );
