@@ -1,14 +1,14 @@
 import { NavActions } from './nav-actions';
-import { NavLinks } from './nav-links';
 import { NavLogo } from './nav-logo';
+import { NavSearch } from './nav-search';
 
 export function Navbar() {
   return (
-    <header className="bg-background/80 border-b backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <header className="bg-background sticky top-0 z-50 border-b">
+      <div className="mx-auto flex h-16 items-center justify-between px-6">
         <NavLogo />
 
-        <NavLinks />
+        <NavSearch />
 
         <NavActions />
       </div>
