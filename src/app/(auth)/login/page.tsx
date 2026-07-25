@@ -1,3 +1,4 @@
+import { LoginForm } from '@/components/forms/login-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function LoginPage() {
@@ -5,11 +6,12 @@ export default function LoginPage() {
     <Card>
       <CardHeader>
         <h1 className="text-2xl font-bold">Welcome Back</h1>
-        <p className="text-muted-foreground mt-2 text-sm">Sign in to your DevTrace AI account.</p>
+
+        <p className="text-muted-foreground text-sm">Sign in to continue.</p>
       </CardHeader>
 
       <CardContent>
-        <p className="text-muted-foreground text-sm">Login form will be added next.</p>
+        <LoginForm />
       </CardContent>
     </Card>
   );

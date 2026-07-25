@@ -1,3 +1,4 @@
+import { RegisterForm } from '@/components/forms/register-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function RegisterPage() {
@@ -5,11 +6,12 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <h1 className="text-2xl font-bold">Create Account</h1>
-        <p className="text-muted-foreground mt-2 text-sm">Create your DevTrace AI account.</p>
+
+        <p className="text-muted-foreground text-sm">Create your DevTrace AI account.</p>
       </CardHeader>
 
       <CardContent>
-        <p className="text-muted-foreground text-sm">Registration form will be added next.</p>
+        <RegisterForm />
       </CardContent>
     </Card>
   );
