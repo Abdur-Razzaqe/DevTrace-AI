@@ -6,13 +6,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterInput } from '@/schemas/auth.schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+
+import { signUp } from '@/lib/auth-client';
 
 export function RegisterForm() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -21,17 +24,28 @@ export function RegisterForm() {
       password: '',
     },
   });
-
+  const router = useRouter();
   const onSubmit = async (data: RegisterInput) => {
     try {
-      console.log('Register Data:', data);
+      const result = await signUp.email({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
 
-      // TODO:
-      // await authClient.signUp.email(...)
+      if (result.error) {
+        toast.error(result.error.message ?? 'Registration failed');
+        return;
+      }
 
-      reset();
+      toast.success('Account created successfully');
+
+      router.push('/dashboard');
+      router.refresh();
     } catch (error) {
       console.error(error);
+
+      toast.error('Something went wrong');
     }
   };
 

@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
 import './globals.css';
 
-import { ThemeProvider } from '@/providers/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { ThemeProvider } from '@/providers/theme-provider';
+import { AuthProvider } from '@/providers/auth-provider';
+
 import { Toaster } from 'sonner';
 
 const geistSans = Geist({
@@ -36,7 +39,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
+
             <Toaster richColors position="top-right" />
           </TooltipProvider>
         </ThemeProvider>
