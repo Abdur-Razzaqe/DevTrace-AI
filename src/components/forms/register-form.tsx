@@ -4,12 +4,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { registerSchema, type RegisterInput } from '@/schemas/auth.schema';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function RegisterForm() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -20,63 +23,67 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (data: RegisterInput) => {
-    console.log(data);
+    try {
+      console.log('Register Data:', data);
+
+      // TODO:
+      // await authClient.signUp.email(...)
+
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div>
-        <label htmlFor="name" className="mb-2 block text-sm font-medium">
+      {/* Name */}
+      <div className="space-y-2">
+        <label htmlFor="name" className="text-sm font-medium">
           Full Name
         </label>
 
-        <input
-          id="name"
-          type="text"
-          {...register('name')}
-          className="border-input bg-background w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
-        />
+        <Input id="name" placeholder="John Doe" autoComplete="name" {...register('name')} />
 
-        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
+        {errors.name && <p className="text-destructive text-sm">{errors.name.message}</p>}
       </div>
 
-      <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-medium">
+      {/* Email */}
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-sm font-medium">
           Email
         </label>
 
-        <input
+        <Input
           id="email"
           type="email"
+          placeholder="john@example.com"
+          autoComplete="email"
           {...register('email')}
-          className="border-input bg-background w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
         />
 
-        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+        {errors.email && <p className="text-destructive text-sm">{errors.email.message}</p>}
       </div>
 
-      <div>
-        <label htmlFor="password" className="mb-2 block text-sm font-medium">
+      {/* Password */}
+      <div className="space-y-2">
+        <label htmlFor="password" className="text-sm font-medium">
           Password
         </label>
 
-        <input
+        <Input
           id="password"
           type="password"
+          autoComplete="new-password"
           {...register('password')}
-          className="border-input bg-background w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
         />
 
-        {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>}
+        {errors.password && <p className="text-destructive text-sm">{errors.password.message}</p>}
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-primary text-primary-foreground w-full rounded-lg py-2 font-medium disabled:opacity-50"
-      >
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? 'Creating account...' : 'Create Account'}
-      </button>
+      </Button>
     </form>
   );
 }
