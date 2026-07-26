@@ -1,5 +1,14 @@
+import { redirect } from 'next/navigation';
+
+import { getSession } from '@/lib/session';
+
 import { LoginForm } from '@/components/forms/login-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+const session = await getSession();
+
+if (session) {
+  redirect('/dashboard');
+}
 
 export default function LoginPage() {
   return (

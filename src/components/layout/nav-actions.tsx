@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -33,7 +34,7 @@ export function NavActions() {
 
     toast.success('Signed out successfully.');
 
-    router.replace('/login');
+    router.replace('/');
     router.refresh();
   };
 
@@ -52,34 +53,32 @@ export function NavActions() {
       ) : session?.user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Button variant="ghost" size="icon" className="rounded-full p-0">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={session.user.image ?? ''} alt={session.user.name ?? 'User'} />
-                <AvatarFallback>{initial}</AvatarFallback>
-              </Avatar>
-            </Button>
+            <Avatar className="h-9 w-9 cursor-pointer">
+              <AvatarImage src={session.user.image ?? ''} alt={session.user.name ?? 'User'} />
+              <AvatarFallback>{initial}</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-64">
-            <DropdownMenuLabel>
-              <div className="flex flex-col">
-                <span className="font-medium">{session.user.name ?? 'User'}</span>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>
+                <div className="flex flex-col">
+                  <span className="font-medium">{session.user.name ?? 'User'}</span>
 
-                <span className="text-muted-foreground text-xs">{session.user.email}</span>
-              </div>
-            </DropdownMenuLabel>
+                  <span className="text-muted-foreground text-xs">{session.user.email}</span>
+                </div>
+              </DropdownMenuLabel>
 
-            <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => router.push('/dashboard')}>
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Dashboard
-            </DropdownMenuItem>
-
-            <DropdownMenuItem onClick={() => router.push('/settings')}>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/settings')}>
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
 
             <DropdownMenuSeparator />
 

@@ -1,5 +1,15 @@
+import { redirect } from 'next/navigation';
+
+import { getSession } from '@/lib/session';
+
 import { RegisterForm } from '@/components/forms/register-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+
+const session = await getSession();
+
+if (session) {
+  redirect('/dashboard');
+}
 
 export default function RegisterPage() {
   return (
