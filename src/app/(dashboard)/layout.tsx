@@ -1,5 +1,17 @@
-import { AppShell } from '@/components/layout/app-shell';
+import { redirect } from 'next/navigation';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <AppShell>{children}</AppShell>;
+import { getSession } from '@/lib/session';
+
+export default async function DashboardLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  return <>{children}</>;
 }
