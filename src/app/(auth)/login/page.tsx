@@ -7,7 +7,7 @@ export default function LoginPage() {
       <CardHeader>
         <h1 className="text-2xl font-bold">Welcome Back</h1>
 
-        <p className="text-muted-foreground text-sm">Sign in to continue.</p>
+        <p className="text-muted-foreground text-sm">Sign in to your DevTrace AI account.</p>
       </CardHeader>
 
       <CardContent>
