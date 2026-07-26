@@ -4,13 +4,16 @@ import { getSession } from '@/lib/session';
 
 import { LoginForm } from '@/components/forms/login-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-const session = await getSession();
 
-if (session) {
-  redirect('/dashboard');
-}
+export const dynamic = 'force-dynamic';
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getSession();
+
+  if (session) {
+    redirect('/dashboard');
+  }
+
   return (
     <Card>
       <CardHeader>

@@ -5,13 +5,15 @@ import { getSession } from '@/lib/session';
 import { RegisterForm } from '@/components/forms/register-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
-const session = await getSession();
+export const dynamic = 'force-dynamic';
 
-if (session) {
-  redirect('/dashboard');
-}
+export default async function RegisterPage() {
+  const session = await getSession();
 
-export default function RegisterPage() {
+  if (session) {
+    redirect('/dashboard');
+  }
+
   return (
     <Card>
       <CardHeader>
