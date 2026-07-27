@@ -1,17 +1,19 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { registerSchema, type RegisterInput } from '@/schemas/auth.schema';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { signUp } from '@/lib/auth-client';
+import { signIn, signUp } from '@/lib/auth-client';
+import { registerSchema, type RegisterInput } from '@/schemas/auth.schema';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function RegisterForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -24,17 +26,17 @@ export function RegisterForm() {
       password: '',
     },
   });
-  const router = useRouter();
+
   const onSubmit = async (data: RegisterInput) => {
     try {
-      const result = await signUp.email({
+      const { error } = await signUp.email({
         name: data.name,
         email: data.email,
         password: data.password,
       });
 
-      if (result.error) {
-        toast.error(result.error.message ?? 'Registration failed');
+      if (error) {
+        toast.error(error.message ?? 'Registration failed');
         return;
       }
 
@@ -44,8 +46,19 @@ export function RegisterForm() {
       router.refresh();
     } catch (error) {
       console.error(error);
-
       toast.error('Something went wrong');
+    }
+  };
+
+  const handleGithubSignUp = async () => {
+    try {
+      await signIn.social({
+        provider: 'github',
+        callbackURL: '/dashboard',
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error('GitHub sign in failed');
     }
   };
 
@@ -88,6 +101,7 @@ export function RegisterForm() {
         <Input
           id="password"
           type="password"
+          placeholder="********"
           autoComplete="new-password"
           {...register('password')}
         />
@@ -95,8 +109,25 @@ export function RegisterForm() {
         {errors.password && <p className="text-destructive text-sm">{errors.password.message}</p>}
       </div>
 
+      {/* Email Register */}
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? 'Creating account...' : 'Create Account'}
+      </Button>
+
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background text-muted-foreground px-2">Or continue with</span>
+        </div>
+      </div>
+
+      {/* GitHub */}
+      <Button type="button" variant="outline" className="w-full" onClick={handleGithubSignUp}>
+        Continue with GitHub
       </Button>
     </form>
   );
