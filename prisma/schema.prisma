@@ -16,15 +16,17 @@ model User {
   createdAt     DateTime
   updatedAt     DateTime
 
-  // DevTrace AI Profile
+  // Profile
   githubUsername String? @unique
   bio            String?
   location       String?
   website        String?
 
+  // Better Auth
   sessions Session[]
   accounts Account[]
 
+  // DevTrace AI
   repositories Repository[]
   activities   Activity[]
 
@@ -65,6 +67,7 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([providerId, accountId])
   @@map("account")
 }
 
@@ -80,40 +83,58 @@ model Verification {
 }
 
 model Repository {
-  id          String  @id @default(cuid())
-  name        String
-  fullName    String  @unique
-  githubId    Int     @unique
-  url         String
+  id       String @id @default(cuid())
+  githubId Int    @unique
+
+  name     String
+  fullName String @unique
+
   description String?
   language    String?
-  isPrivate   Boolean @default(false)
+
+  url           String
+  defaultBranch String @default("main")
+
+  isPrivate Boolean @default(false)
+
+  stars      Int @default(0)
+  forks      Int @default(0)
+  openIssues Int @default(0)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  commits   Commit[]
+  commits Commit[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Commit {
-  id          String   @id @default(cuid())
-  sha         String   @unique
-  message     String
-  author      String
+  id String @id @default(cuid())
+
+  sha     String @unique
+  message String
+  author  String
+
   committedAt DateTime
-  additions   Int      @default(0)
-  deletions   Int      @default(0)
+
+  additions Int @default(0)
+  deletions Int @default(0)
 
   repositoryId String
   repository   Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([repositoryId])
 }
 
 model Activity {
-  id      String  @id @default(cuid())
+  id String @id @default(cuid())
+
   type    String
   title   String
   details String?
@@ -122,4 +143,6 @@ model Activity {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
